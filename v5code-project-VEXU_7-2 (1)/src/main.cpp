@@ -195,6 +195,18 @@ void autonomous(void) {
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
+bool status = false;
+bool climberState = false;
+void toggleWings() {
+  status = !status;
+  wings.set(status);
+}
+
+void toggleClimber() {
+  climberState = !climberState;
+  climber.set(climberState);
+}
+
 void usercontrol(void) {
   // User control code here, inside the loop
   while (1) {
@@ -209,6 +221,7 @@ void usercontrol(void) {
 
     //Replace this line with chassis.control_tank(); for tank drive 
     //or chassis.control_holonomic(); for holo drive.
+    /*
     if (Controller1.ButtonR1.pressing()) 
     {
       wings.set(false);
@@ -224,15 +237,14 @@ void usercontrol(void) {
     if (Controller1.ButtonB.pressing()) 
     {
       climber.set(false);
-    }
+    }*/
+    
     //chassis.control_arcade();
 
     wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources.
   }
 }
-
-
 
 void updateDrivetrainVelocity()
 {
@@ -274,6 +286,8 @@ void onevent_Controller1ButtonA_pressed_0() {
 
 int main() {
   // register event handlers
+  Controller1.ButtonR1.pressed(toggleWings);
+  Controller1.ButtonX.pressed(toggleClimber);
   Controller1.ButtonL1.pressed(onevent_Controller1ButtonL1_pressed_0);
   Controller1.ButtonL2.pressed(onevent_Controller1ButtonL2_pressed_0);
   Controller1.ButtonL2.released(onevent_Controller1ButtonL2_released_0);
